@@ -215,7 +215,7 @@ function AgendaItem({
         </div>
       </div>
       <div className="relative overflow-hidden p-2 rounded-md mt-3">
-        <div className="absolute bg-accent -z-10 opacity-35 top-0 left-0 right-0 bottom-0" />
+        <div className="absolute bg-secondary -z-10 opacity-35 top-0 left-0 right-0 bottom-0" />
         <span style={{ whiteSpace: "pre-wrap" }} className="ph-censor-text">{content}</span>
       </div>
     </div>

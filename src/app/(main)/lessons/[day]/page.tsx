@@ -1,7 +1,7 @@
 "use client";
 import { LessonType } from "@/lib/types";
 import { getDayLessons } from "../../actions";
-import { Suspense, useEffect, useState } from "react";
+import { Suspense, useEffect, useState, use } from "react";
 
 const formatDate = (dateString: string) => {
   const months = [
@@ -16,7 +16,8 @@ const formatDate = (dateString: string) => {
   return `${date.getDate()} ${months[date.getMonth()]}`;
 };
 
-const Page = ({ params }: { params: { day: string }; }) => {
+const Page = (props: { params: Promise<{ day: string }>; }) => {
+  const params = use(props.params);
   const day = params.day;
   const formattedDate = day ? formatDate(day) : '';
   const [lessonsData, setLessonsData] = useState<LessonType[]>([]);
@@ -124,7 +125,7 @@ function LessonItem({
         </div>
       </div>
       {content && (<div className="relative overflow-hidden p-2 rounded-md mt-3">
-        <div className="absolute bg-accent -z-10 opacity-35 top-0 left-0 right-0 bottom-0" />
+        <div className="absolute bg-secondary -z-10 opacity-35 top-0 left-0 right-0 bottom-0" />
         <span className="ph-censor-text" style={{ whiteSpace: "pre-wrap" }}>{content}</span>
       </div>)}
     </div>

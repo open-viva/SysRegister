@@ -8,7 +8,7 @@ import { getMarks, getPresence } from "./register/actions";
 import { getUserDetailsFromToken } from "@/lib/utils";
 
 export async function getDayAgenda(date: Date) {
-    const userData = await getUserDetailsFromToken(cookies().get("internal_token")?.value || "");
+    const userData = await getUserDetailsFromToken((await cookies()).get("internal_token")?.value || "");
     if (!userData) {
         return handleAuthError();
     }
@@ -18,7 +18,7 @@ export async function getDayAgenda(date: Date) {
     const res = await fetch(`https://web.spaggiari.eu/fml/app/default/agenda_studenti.php?ope=get_events`, {
         method: "POST",
         headers: {
-            "Cookie": `PHPSESSID=${cookies().get("token")?.value}; webidentity=${userData.uid};`,
+            "Cookie": `PHPSESSID=${(await cookies()).get("token")?.value}; webidentity=${userData.uid};`,
         },
         body: formData
     })
@@ -32,14 +32,14 @@ export async function getDayAgenda(date: Date) {
 }
 
 export async function getDayLessons(date: Date) {
-    const userData = await getUserDetailsFromToken(cookies().get("internal_token")?.value || "");
+    const userData = await getUserDetailsFromToken((await cookies()).get("internal_token")?.value || "");
     if (!userData) {
         return handleAuthError();
     }
     const formattedDate = date.toISOString().split('T')[0];
     const res = await fetch(`https://web.spaggiari.eu/fml/app/default/attivita_studente.php?a=get_lezioni&data=${formattedDate}`, {
         headers: {
-            "Cookie": `PHPSESSID=${cookies().get("token")?.value}; webidentity=${userData.uid};`,
+            "Cookie": `PHPSESSID=${(await cookies()).get("token")?.value}; webidentity=${userData.uid};`,
         },
     });
     let data;
@@ -53,7 +53,7 @@ export async function getDayLessons(date: Date) {
 
 // SERVER-DATA-SECTION
 export async function getAllNotifications(): Promise<Notification[] | void> {
-    const userData = await getUserDetailsFromToken(cookies().get("internal_token")?.value || "");
+    const userData = await getUserDetailsFromToken((await cookies()).get("internal_token")?.value || "");
     if (!userData) {
         return handleAuthError();
     }
@@ -91,7 +91,7 @@ export async function getAllNotifications(): Promise<Notification[] | void> {
 }
 
 export async function getNotificationDetails(id: string) {
-    const userData = await getUserDetailsFromToken(cookies().get("internal_token")?.value || "");
+    const userData = await getUserDetailsFromToken((await cookies()).get("internal_token")?.value || "");
     if (!userData) {
         return handleAuthError();
     }
@@ -122,7 +122,7 @@ export async function setNotificationAsRead({ notificationId }: { notificationId
         if (!notificationId) {
             return handleAuthError();
         }
-        const userData = await getUserDetailsFromToken(cookies().get("internal_token")?.value || "");
+        const userData = await getUserDetailsFromToken((await cookies()).get("internal_token")?.value || "");
         if (!userData) {
             return handleAuthError();
         }
@@ -144,7 +144,7 @@ export async function setNotificationAsRead({ notificationId }: { notificationId
 }
 
 export async function updateServerData() {
-    const userData = await getUserDetailsFromToken(cookies().get("internal_token")?.value || "");
+    const userData = await getUserDetailsFromToken((await cookies()).get("internal_token")?.value || "");
     if (!userData) {
         return handleAuthError();
     }
@@ -223,7 +223,7 @@ async function updateServerPresenceData(userId: string) {
 }
 
 export async function setUserName(username: string) {
-    const userData = await getUserDetailsFromToken(cookies().get("internal_token")?.value || "");
+    const userData = await getUserDetailsFromToken((await cookies()).get("internal_token")?.value || "");
     if (!userData) {
         return handleAuthError();
     }

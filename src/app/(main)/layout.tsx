@@ -5,6 +5,7 @@ import Navbar from "@/components/Navbar";
 import { Suspense } from "react";
 import { ServerDataUpdaterService } from "@/components/ServerDataUpdaterService";
 import { PostHogProvider } from "../providers";
+import { Badge } from "@/components/ui/badge";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -31,8 +32,12 @@ export default function RootLayout({
           <PostHogProvider>
             <div className="p-6 relative">
               <div className="absolute top-0 bottom-0 left-0 right-0 bg-secondary opacity-20 -z-10" />
-              <p className="text-3xl font-bold">SysRegister</p>
-              <p className="text-accent text-sm">v2025.01.30</p>
+              <p className="text-3xl font-bold flex items-center">
+                SysRegister
+              </p>
+              <div className="flex items-center gap-1.5 pt-1.5">
+                <p className="text-accent text-sm">v2025.09.05</p>
+              </div>
             </div>
             {children}
             <div className="pt-[85px]" />

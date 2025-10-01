@@ -40,19 +40,23 @@ export async function getUserSession({ uid, pass }: { uid: string, pass: string 
         .setExpirationTime("2h")
         .sign(secret);
 
-    cookies().set("internal_token", tokenJwt);
-    cookies().set("tokenExpiry", new Date(expiry).toISOString());
-    cookies().set("token", token);
+    (await cookies()).set("internal_token", tokenJwt, {
+        secure: true,
+    });
+    (await cookies()).set("tokenExpiry", new Date(expiry).toISOString());
+    (await cookies()).set("token", token, {
+        secure: true,
+    });
 }
 
 export async function getUserDetails() {
-    const userData = await getUserDetailsFromToken(cookies().get("internal_token")?.value || "");
+    const userData = await getUserDetailsFromToken((await cookies()).get("internal_token")?.value || "");
     if (!userData) {
         return handleAuthError();
     }
     const page = await (await fetch("https://web.spaggiari.eu/home/app/default/menu_webinfoschool_genitori.php", {
         headers: {
-            "Cookie": `PHPSESSID=${cookies().get("token")?.value}; webidentity=${userData.uid};`,
+            "Cookie": `PHPSESSID=${(await cookies()).get("token")?.value}; webidentity=${userData.uid};`,
         },
     })).text();
     const dom = new JSDOM(page);
@@ -67,13 +71,13 @@ export async function getUserDetails() {
 }
 
 export async function verifySession() {
-    const userData = await getUserDetailsFromToken(cookies().get("internal_token")?.value || "");
+    const userData = await getUserDetailsFromToken((await cookies()).get("internal_token")?.value || "");
     if (!userData) {
         return handleAuthError();
     }
     const page = await (await fetch("https://web.spaggiari.eu/home/app/default/menu_webinfoschool_genitori.php", {
         headers: {
-            "Cookie": `PHPSESSID=${cookies().get("token")?.value}; webidentity=${userData.uid};`,
+            "Cookie": `PHPSESSID=${(await cookies()).get("token")?.value}; webidentity=${userData.uid};`,
         },
     })).text();
     const dom = new JSDOM(page);
