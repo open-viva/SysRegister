@@ -34,6 +34,7 @@ export default function Page() {
     }
     fetchPeriods();
   }, []);
+  
   useEffect(() => {
     async function fetchPeriodsMarks() {
       const marksStore = window.sessionStorage.getItem("marks");
@@ -140,7 +141,6 @@ export default function Page() {
                           const [dayB, monthB] = b.evtDate.split('/').map(Number);
                           return monthA === monthB ? dayA - dayB : monthA - monthB;
                         })
-                        .reverse()
                         .filter(mark => (JSON.parse(window.localStorage.getItem("read_marks_ids") || "[]")).includes(mark.evtId))
                         .map(mark => (
                           <MarkEntry key={mark.evtId} mark={mark} />

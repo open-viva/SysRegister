@@ -19,7 +19,7 @@ export default function Page() {
   useEffect(() => {
     async function getBachecaItems() {
       const storedBacheca = sessionStorage.getItem('bacheca');
-      if (storedBacheca) {
+      if (storedBacheca) { 
         setBacheca(JSON.parse(storedBacheca));
         setBachecaLoading(false);
       } else {
